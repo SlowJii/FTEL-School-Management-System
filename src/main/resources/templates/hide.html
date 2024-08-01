@@ -1,0 +1,31 @@
+<!-- Manage Courses Section -->
+<div class="card mt-3">
+  <div class="card-header">
+    Manage Courses
+  </div>
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Course Name</th>
+        <th>Credit</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="course : ${courses}">
+        <td th:text="${course.courseId}">ID</td>
+        <td th:text="${course.courseName}">Course Name</td>
+        <td th:text="${course.credit}">Credit</td>
+        <td>
+          <form th:action="@{/admin/deleteCourse}" method="post">
+            <input type="hidden" name="courseId" th:value="${course.courseId}"/>
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

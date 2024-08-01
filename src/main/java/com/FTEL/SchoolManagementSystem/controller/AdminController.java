@@ -70,4 +70,18 @@ public class AdminController {
         Set<User> users = adminService.getUsersByCourseId(courseId);
         return ResponseEntity.ok(users);
     }
+
+    // Get all courses
+    @GetMapping("/courses")
+    public ResponseEntity<List<Course>> getAllCourses() {
+        List<Course> courses = adminService.getAllCourses();
+        return ResponseEntity.status(HttpStatus.OK).body(courses);
+    }
+
+    // Get the most popular course
+    @GetMapping("/courses/most-popular")
+    public ResponseEntity<Course> getMostPopularCourse() {
+        Course course = adminService.getMostPopularCourse();
+        return ResponseEntity.status(HttpStatus.OK).body(course);
+    }
 }

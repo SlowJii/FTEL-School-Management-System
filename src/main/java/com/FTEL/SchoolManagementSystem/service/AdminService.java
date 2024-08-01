@@ -9,9 +9,9 @@ import com.FTEL.SchoolManagementSystem.model.User;
 import com.FTEL.SchoolManagementSystem.repository.CourseRepository;
 import com.FTEL.SchoolManagementSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ public class AdminService {
     @Autowired
     private CourseRepository courseRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public User createUser(UserCreationRequest userCreationRequest){
         User user = new User();
 
@@ -46,13 +46,12 @@ public class AdminService {
         return userRepository.save(user);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllUsers(){
 
+    public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public void deleteUser(Long userId){
         if (!userRepository.existsById(userId)){
             throw new RuntimeException("User not found");
@@ -60,7 +59,7 @@ public class AdminService {
         userRepository.deleteById(userId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public Course createCourse(CourseRequest request){
         Course course = new Course();
 
@@ -70,7 +69,7 @@ public class AdminService {
         return courseRepository.save(course);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public Course updateCourse(CourseRequest request, Long courseId){
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
 
@@ -85,19 +84,33 @@ public class AdminService {
         return courseRepository.save(course);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
+    @Transactional
     public void deleteCourse(Long courseId){
         if(!courseRepository.existsById(courseId)){
             throw new RuntimeException("Course not found");
         }
 
-        courseRepository.deleteById(courseId);
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        course.getUsers().forEach(user -> user.getCourses().remove(course));
+        courseRepository.delete(course);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     public Set<User> getUsersByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
         return course.getUsers();
     }
 
+
+    public List<Course> getAllCourses(){
+        return courseRepository.findAll();
+    }
+
+
+    public Course getMostPopularCourse() {
+        return courseRepository.findAll().stream()
+                .max(Comparator.comparingInt(course -> course.getUsers().size()))
+                .orElseThrow(() -> new RuntimeException("No courses found"));
+    }
 }
