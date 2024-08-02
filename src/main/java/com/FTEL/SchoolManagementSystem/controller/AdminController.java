@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,13 +65,6 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    // Get users enrolled in a course by course ID
-    @GetMapping("/courses/{courseId}/users")
-    public ResponseEntity<Set<User>> getUsersByCourseId(@PathVariable Long courseId) {
-        Set<User> users = adminService.getUsersByCourseId(courseId);
-        return ResponseEntity.ok(users);
-    }
-
     // Get all courses
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAllCourses() {
@@ -84,4 +78,5 @@ public class AdminController {
         Course course = adminService.getMostPopularCourse();
         return ResponseEntity.status(HttpStatus.OK).body(course);
     }
+
 }

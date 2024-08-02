@@ -26,6 +26,9 @@ public class AdminService {
     @Autowired
     private CourseRepository courseRepository;
 
+    public Course getCourseById(Long courseId) {
+        return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+    }
 
     public User createUser(UserCreationRequest userCreationRequest){
         User user = new User();
@@ -97,10 +100,10 @@ public class AdminService {
     }
 
 
-    public Set<User> getUsersByCourseId(Long courseId) {
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-        return course.getUsers();
+    public Course getUsersByCourseId(Long courseId) {
+        return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
     }
+
 
 
     public List<Course> getAllCourses(){

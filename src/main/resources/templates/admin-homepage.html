@@ -19,6 +19,9 @@
                     <a href="/admin/home" class="nav-link" sec:authorize="hasRole('ADMIN')">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a href="/course-list" class="nav-link" sec:authorize="isAuthenticated()">Courses</a>
+                </li>
+                <li class="nav-item">
                     <a href="/logout" class="nav-link btn btn-danger" sec:authorize="isAuthenticated()">Logout</a>
                 </li>
             </ul>

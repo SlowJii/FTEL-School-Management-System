@@ -72,21 +72,15 @@ public class AdminPageController {
     @GetMapping("/admin/courses/{courseId}/users")
     public String getUsersByCourseId(@PathVariable Long courseId, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Set<User> users = adminService.getUsersByCourseId(courseId);
+            Course course = adminService.getUsersByCourseId(courseId);
+            Set<User> users = course.getUsers();
+            model.addAttribute("course", course);
             model.addAttribute("courseUsers", users);
-            return "course-users";
+            return "get-users-in-course";
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("message", "Error retrieving users: " + e.getMessage());
-            return "redirect:/admin/home";
+            redirectAttributes.addFlashAttribute("errorMessage", "Course not found");
+            return "redirect:/error-page";
         }
-    }
-
-    // Get all courses
-    @GetMapping("/admin/courses")
-    public String getAllCourses(Model model) {
-        List<Course> courses = adminService.getAllCourses();
-        model.addAttribute("courses", courses);
-        return "admin-courses";
     }
 
     // Get the most popular course
@@ -97,6 +91,14 @@ public class AdminPageController {
         model.addAttribute("mostPopularCourse", course);
         model.addAttribute("courseUsers", users); // Thêm danh sách người dùng vào model
         return "admin-most-popular-course";
+    }
+
+    // Get all courses
+    @GetMapping("/admin/courses")
+    public String getAllCourses(Model model) {
+        List<Course> courses = adminService.getAllCourses();
+        model.addAttribute("courses", courses);
+        return "admin-courses";
     }
 
     // Update an existing course
