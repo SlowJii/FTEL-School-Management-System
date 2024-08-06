@@ -34,7 +34,8 @@
 - Module 6: Authenticate and Authorize, building Role
 
 ## ROLE
-- ADMIN: all permissions
+- ADMIN: all permissions!
+
 - STAFF
   - Update User information
   - Add Course to User
@@ -44,3 +45,5 @@
   - Get all Course
   - Get Course by id
   
+## ER Diagram
+[Screenshot from 2024-08-02 15-03-35](https://github.com/user-attachments/assets/9ff70bb4-3aa7-4ecc-aaa5-573906a3b515)
