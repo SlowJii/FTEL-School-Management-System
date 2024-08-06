@@ -10,6 +10,9 @@
     - Rest Repositories
     - Lombok
     - PostgreSQL Driver
+    - Thymleaf
+    - Json Web Token
+    - OAuth2
   - IDE: Intellij Idea Community
   - Java 22
   - Open JDK 22
